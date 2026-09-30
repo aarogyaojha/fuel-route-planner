@@ -1,0 +1,1 @@
+"""Fuel stations application."""
