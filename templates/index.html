@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fuel Route Planner</title>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'vendor/leaflet/leaflet.css' %}">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <header class="header">
+        <h1>Fuel Route Planner</h1>
+        <p class="subtitle">Cheapest fuel stops between locations</p>
+      </header>
+
+      <form id="route-form" class="form">
+        <div class="field">
+          <label for="start-input">Start</label>
+          <input
+            type="text"
+            id="start-input"
+            name="start"
+            placeholder="e.g. Chicago, IL"
+            required
+            autocomplete="off"
+          >
+        </div>
+
+        <div class="field">
+          <label for="finish-input">Finish</label>
+          <input
+            type="text"
+            id="finish-input"
+            name="finish"
+            placeholder="e.g. Dallas, TX"
+            required
+            autocomplete="off"
+          >
+        </div>
+
+        <button type="submit" id="submit-btn" class="button">Plan Route</button>
+      </form>
+
+      <div id="loading" class="status-box loading" style="display: none;">
+        Planning route...
+      </div>
+
+      <div id="error-box" class="status-box error" style="display: none;"></div>
+
+      <section id="summary" class="summary-panel" style="display: none;">
+        <h2>Trip Summary</h2>
+        <div class="summary-grid">
+          <div class="summary-item">
+            <span class="summary-label">Total Distance</span>
+            <span id="summary-distance" class="summary-value">-</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">Fuel Stops</span>
+            <span id="summary-stops" class="summary-value">-</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">Gallons Consumed</span>
+            <span id="summary-gallons-consumed" class="summary-value">-</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">Gallons Purchased</span>
+            <span id="summary-gallons" class="summary-value">-</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">Initial Fuel Cost</span>
+            <span id="summary-initial-cost" class="summary-value">-</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">Total Fuel Cost</span>
+            <span id="summary-cost" class="summary-value">-</span>
+          </div>
+        </div>
+
+        <div id="stops-container" class="stops-section">
+          <h3>Fuel Stops</h3>
+          <ol id="stops-list" class="stops-list"></ol>
+        </div>
+      </section>
+    </aside>
+
+    <main class="map-container">
+      <div id="map"></div>
+    </main>
+  </div>
+
+  <script src="{% static 'vendor/leaflet/leaflet.js' %}"></script>
+  <script src="{% static 'js/app.js' %}"></script>
+</body>
+</html>
