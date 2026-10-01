@@ -9,3 +9,4 @@ pytest-django>=4.8.0
 numpy>=2.0.0
 shapely>=2.0.0
 gunicorn>=22.0.0
+whitenoise>=6.8.0

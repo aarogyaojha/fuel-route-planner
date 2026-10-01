@@ -44,13 +44,22 @@ make run
 - `make test`: Executes test suite (`pytest`).
 - `make lint`: Checks linting and formatting (`ruff check . && ruff format --check .`).
 
-### Production Server
+## Deployment
 
-Run with Gunicorn using production settings:
+To deploy on Render's free web service (or any containerized hosting platform):
 
-```bash
-DJANGO_SETTINGS_MODULE=config.settings.production gunicorn config.wsgi:application --bind 0.0.0.0:8000 --workers 4
-```
+- **Build Command**: `./build.sh`
+- **Start Command**: `gunicorn config.wsgi:application`
+
+### Required Environment Variables
+
+| Variable | Description |
+|:---|:---|
+| `SECRET_KEY` | Secret key used for cryptographic signing. Required in production; the application will exit with an error on startup if missing. |
+| `ALLOWED_HOSTS` | Comma-separated list of host/domain names allowed to serve requests (e.g., `your-app.onrender.com`). If `RENDER_EXTERNAL_HOSTNAME` is set by Render, it is automatically added. |
+| `ORS_API_KEY` | OpenRouteService API key used for routing and geocoding requests. |
+| `DJANGO_SETTINGS_MODULE` | Set to `config.settings.production` to activate production settings. |
+| `DATABASE_URL` | *(Optional)* PostgreSQL connection string (e.g. `postgres://user:pass@host:5432/dbname`). Defaults to local SQLite if omitted. |
 
 ## API Endpoint
 

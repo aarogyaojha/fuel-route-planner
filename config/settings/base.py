@@ -36,6 +36,7 @@ INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -84,6 +85,31 @@ USE_TZ = True
 STATIC_URL = "static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_DIRS = [BASE_DIR / "static"]
+
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
+WHITENOISE_MANIFEST_STRICT = False
+
+try:
+    from whitenoise.storage import CompressedManifestStaticFilesStorage
+
+    _orig_hashed_name = CompressedManifestStaticFilesStorage.hashed_name
+
+    def _safe_hashed_name(self, name, content=None, filename=None):
+        try:
+            return _orig_hashed_name(self, name, content=content, filename=filename)
+        except (ValueError, Exception):
+            return name
+
+    CompressedManifestStaticFilesStorage.hashed_name = _safe_hashed_name
+except ImportError:
+    pass
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
